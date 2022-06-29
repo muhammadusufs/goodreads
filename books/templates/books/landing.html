@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+
+  <form action="" method="get">
+    <div class="form-group d-flex mb-3">
+      <input type="text" class="form-control me-3" placeholder="Search ..." name="q" value="{{search_query}}">
+      <button class="btn btn-success">Search</button>
+    </div>
+  </form>
+
+    {% if books %}
+
+    <div class="row">
+
+        {% for book in books.object_list %}
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-4">
+                <div class="d-flex book-card text-black">
+                  <div class="flex-shrink-0">
+                    <img src="{{book.cover_pic.url}}" class="img-fluid" style="width: 180px; border-radius: 10px;">
+                  </div>
+                  <div class="flex-grow-1 d-flex justify-content-between flex-column ms-3">
+                    <div>
+                        <h5 class="mb-1">{{book.title}}</h5>
+                        
+                          {% if book.bookauthor_set.all %}
+                           <div> by
+                            {% for bookauthor in book.bookauthor_set.all %} 
+                              {% if forloop.last %} 
+                              <a class="text-decoration-none" href="{% url 'author' bookauthor.author.id %}">{{bookauthor.author}}</a> 
+                              {% else %}
+                                <a class="text-decoration-none" href="{% url 'author' bookauthor.author.id %}">{{bookauthor.author}}</a>, 
+                              {% endif %}
+
+                            {% endfor %}
+                           </div>
+                          {% endif %} 
+                          
+                        
+                        <p class="mb-2 pb-2" style="color: #2b2a2a;">ISBN {{book.isbn}}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        {{book.description|slice:"250"}}...
+                    </div>
+                    
+                    <div class="d-flex pt-1">
+                      <a href="{% url 'book-detail' book.id %}" class="btn btn-outline-primary me-1 w-25">Preview</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+        <nav>
+          <ul class="pagination">
+              {% if books.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                  <li class="page-item"><a class="page-link" href="?page={{ books.previous_page_number }}">previous</a></li>
+              {% endif %}
+
+              <li class="page-item active">
+                  <a href="#" class="page-link">{{ books.number }}</a>
+              </li>
+
+              {% if books.has_next %}
+                  <li class="page-item"><a class="page-link" href="?page={{ books.next_page_number }}">next</a></li>
+                  <li class="page-item"><a class="page-link" href="?page={{ books.paginator.num_pages }}">last&raquo;</a></li>
+              {% endif %}
+          </ul>
+      </nav>
+
+
+    </div>
+
+    {% else %}
+    No books found.
+
+    {% endif %}
+    {% endblock content %}
+
+</div>

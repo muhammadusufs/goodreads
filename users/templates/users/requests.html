@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-xl-6">
+            <h3 >Friend Requests</h3>
+            
+            {% if f_requests %}
+                {% for f in f_requests %}
+                    <div class="card d-flex p-3 mt-3 rounded border-0 shadow-lg flex-row align-items-center justify-content-between" >
+                        <div class="f-image">
+                            <img src="{{f.from_user.profile_pic.url}}" alt="">
+                        </div>
+                        <div class="flex-grow-1 p-2">
+                            <b><a href="{% url 'user' f.from_user.username %}" class="text-decoration-none">{{f.from_user.username}}</a></b> add you as friend
+                        </div>
+                        <a class="me-1" href="{% url 'delete-friend' f.id %}">
+                            <!-- % url 'cancel-friend' f.sender.username % -->
+                            <button class="btn btn-light">Cancel</button>
+                        </a>
+
+                        <!-- % url 'accept-friend' f.sender.username % -->
+                        <a href="{% url 'accept-friend' f.id %}">
+                            <button class="btn btn-primary">Accept</button>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <div class="h6">You haven't any Friend Requests</div>
+            {% endif %}
+
+            
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

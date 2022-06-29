@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-xl-6">
+            {% if friends %}
+            <h3>Friends</h3>
+            {% for friend in  friends %}
+                
+                <div class="card d-flex p-3 mt-3 rounded border-0 shadow-lg flex-row align-items-center justify-content-between">
+                    <div class="f-image">
+                        <img src="{{friend.profile_pic.url}}" alt="">
+                    </div>
+
+                    <div class="flex-grow-1 ms-3">
+                        <a class="text-decoration-none" href="{% url 'user' friend.username %}">{{friend.first_name}} {{friend.last_name}}</a>
+                    </div>
+                   
+                    <div>
+                        {% if u_self %}
+                        <a href="{% url 'cancel-friend' friend.username %}" class="btn btn-light text-danger">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% endfor %}
+            {% else %}
+                <h6 class="text-danger">Couldn't find any friends </h6>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

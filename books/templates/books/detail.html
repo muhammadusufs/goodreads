@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load looper %}
+{% block content %}
+<div class="container">
+
+    <h3 class="mb-3">
+        {{book.title}} 
+        {% if book.bookauthor_set.all %}
+        - 
+        {% for author in book.bookauthor_set.all %}
+            {% if forloop.last %}
+            {{author.fullname}}
+            {% else %}
+            {{author.fullname}},
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+    </h3>
+    
+    <div class="row mb-3">
+        <div class="col-sm-12 col-md-12 col-xl-2">
+            <img src="{{book.cover_pic.url}}" class="img-fluid rounded detail-img" alt="">
+        </div>
+        <div class="col-sm-12 col-md-12 col-xl-10 ps-3">
+            <h5>Description</h5>
+
+            <p style="text-align: justify;">
+                {{book.description}}
+            </p>
+            <h5 class="lead mb-5">
+                ISBN {{book.isbn}}
+            </h5>
+        </div>
+    </div>
+
+    {% if request.user.is_authenticated %}
+    <div class="row-mb-3">
+        <h3>Post reviews</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="stars">Rate it :</label>
+                <select name="stars_given" id="stars" class="form-select mt-2">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment :</label>
+                <textarea name="comment" id="comment" class="form-control mt-2" cols="30" rows="5"></textarea>
+            </div>    
+            <button class="btn btn-primary ps-4 pe-4 mt-3 mb-3">Post</button>
+        </form>
+    </div>
+    {% else %}
+    <p class="text-secondary">
+        Sign up to post review :-)
+    </p>
+    {% endif %}
+    
+    {% for review in book.bookreview_set.all %}
+    
+    <div class="row mb-3 review-row">
+        <div class="col-sm-1 col-md-1 col-xl-1">
+          <img class="img-fluid img-detail" style="border-radius: 50%;" src="{{review.user.profile_pic.url}}" alt="">
+        </div>
+        <div class="col-sm-12 col-md-12 col-xl-11">
+            <div class="d-flex justify-content-between">
+                <div class="review-header">
+                    {% for i in review.stars_given|times %}
+                    <i class="fa fa-star"></i>
+                    {% endfor %}
+                    {% for n in review.stars_given|sub|times%}
+                    <i class="fa fa-star-o"></i>
+                    {% endfor %}
+                    <b>
+                        <a class="text-decoration-none" href="{% url 'user' review.user.username %}">@{{review.user}}</a>
+                    </b>
+                </div>
+                <div class="post-date">
+                    Posted on {{review.created_at}}  
+                    {% if request.user.is_authenticated and review.user == request.user %}
+                    |
+                    <span class="tools">
+                        <a href="{% url 'edit-review' review.book.id review.id%}" class="text-decoration-none text-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                        </a>
+                        <a href="{% url 'delete-review' review.book.id review.id%}" class="text-decoration-none text-danger">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </a>
+                    </span>
+                    {% endif %}
+                </div>
+                
+            </div>
+            <div class="review-body">
+                {{review.comment}}
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <a href="{% url 'books' %}" class="text-decoration-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        </svg>
+        Back
+    </a>
+</div>
+{% endblock content %}

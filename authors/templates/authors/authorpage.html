@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-12 col-md-4  col-xl-3">
+            <div class="card border-0 shadow-lg p-3 mb-5 bg-body rounded">
+                <div class="author-image mx-auto">
+                    <img src="{{author.pic.url}}" class="rounded w-100" alt="">
+                </div>
+                <div class="author-name h4 text-center p-3">
+                    {{author.first_name}} 
+                    {{author.last_name}}
+                </div>
+
+                <div class="about">
+                    <div class="text-secondary p-2">
+                        {% if author.email %} Email : {{author.email}} {% endif %}
+                        {% if author.bio %} {{author.bio}} {% endif %} 
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Books
+                          <span class="badge bg-primary rounded-pill">{{author.bookauthor_set.all.count}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Reviews of Books
+                          <span class="badge bg-primary rounded-pill">{{reviews}}</span>
+                        </li>
+                      </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-8 col-xl-9">
+            <div class="card border-0 shadow-lg p-3 mb-5 bg-body rounded">
+                <h3>Books by {{author.first_name}}</h3>
+                <div class="row">
+                    {% for books in author.bookauthor_set.all %}
+                        <div class="col-sm-6 col-md-6 col-xl-4 mt-3">
+                            <div class="card rounded">
+                                <img src="{{books.book.cover_pic.url}}" alt="" class="cover_pic" >
+                                <div class="h5 text-center">
+                                    {{books.book.title}}
+                                </div>
+                                <div class="p-3">
+                                    <table class="w-100">
+                                        <tr>
+                                            <td>Reviews</td>
+                                            <td class="text-right">{{books.book.bookreview_set.all.count}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <a href="{% url 'book-detail' books.book.id %}" class="d-block btn btn-primary m-3">Preview</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

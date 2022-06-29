@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    
+<h3>Profile</h3>
+<div class="row">
+    <div class="col col-md-9 col-lg-7 col-xl-5">
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body p-4">
+            <div class="d-flex prof-card text-black">
+              <div class="flex-shrink-0 prof-pic">
+                <img src="{{user.profile_pic.url}}" class="img-fluid" style="width: 180px; border-radius: 10px;">
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1">{{user.first_name}} {{user.last_name}}</h5>
+                <p class="mb-2 mt-3 pb-2" style="color: #2b2a2a;">@{{user.username}} | {{user.email}}<br><a href="{% url 'friends' user.username %}" class="text-decoration-none"><b>{{user.friends.all.count}} friends </b></a></p>
+                <p>
+                  
+                </p>
+                
+                {% if user == request.user %}
+                  <div class="d-flex pt-1">
+                    <a href="{% url 'edit-profile'%}" class="btn btn-outline-primary me-1 flex-grow-1">Edit</a>
+                    <a href="{% url 'logout' %}" type="button" class="btn btn-danger flex-grow-1">Log out</a>
+                  </div>
+                {% elif user in request.user.friends.all %}
+                <div class="badge bg-primary rounded">You are friends</div>
+                <div class="badge bg-danger">
+                  <a class="text-decoration-none text-white" href="{% url 'cancel-friend' user.username %}" >
+                    Cancel Friendship
+                  </a> 
+                </div>
+                {% else %}
+                <div class="d-flex pt-1">
+                  <a href="{% url 'friend-request' user.username %}" class="btn btn-outline-primary d-flex align-items-center justify-content-center  me-1 flex-grow-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                      <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                      Add friend
+                  </a>
+                </div>  
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

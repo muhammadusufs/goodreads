@@ -1,0 +1,97 @@
+.review-header{
+    font-size: 13px;
+}
+
+.review-header i {
+    color: #f5cd1e;
+}
+
+.review-body {
+    font-size: 12px;
+    text-align: justify;
+    padding-top: 5px;
+}
+
+.cover_pic {
+    width: 150px;
+    padding: 20px;
+    border-radius: 20px;
+    height: 200px;
+    object-fit: cover;
+    margin-left: auto;
+    margin-right: auto;
+}
+.review-row{
+    border-bottom: 1px solid #bcbcbc;
+    padding-bottom: 15px;
+}
+
+.post-date {
+    color: #555;
+    font-size: 13px;
+
+}
+
+.my-alert{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    min-width: fit-content;
+    animation: alert ease-in 2s forwards;
+}
+
+.f-image img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.prof-img img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.prof-username {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.comment {
+    font-size: 14px;
+
+}
+
+.about > .text-secondary{
+    font-size: 13px;
+}
+@media screen and (max-width:768px){
+    .book-card, .prof-card{
+        flex-direction: column;
+    }
+    .prof-pic {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .w-25 {
+        width: fit-content !important;
+    }
+    .img-detail {
+        width: 50px !important;
+    }
+
+}
+
+@keyframes alert {
+    0%{
+        opacity: 1;
+    }
+    90%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        pointer-events: none;
+    }
+}

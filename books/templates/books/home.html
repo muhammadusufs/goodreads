@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load looper %}
+{% block content %}
+<div class="container">
+
+    <div class="h3">Reviews</div>
+    <div class="row mb-3">
+        {% for review in page_obj %}
+            <div class="col-sm-12 col-md-12 col-xl-7">
+                <div class="card mt-3">
+                    <div class="card-header d-flex bg-light">
+                      <div class="prof-img w-100 d-flex align-items-center">
+                        <img src="{{review.user.profile_pic.url}}" alt="">
+                        <div class="review-header ms-3 flex-grow-1">
+                            {% for i in review.stars_given|times %}
+                            <i class="fa fa-star"></i>
+                            {% endfor %}
+                            {% for n in review.stars_given|sub|times%}
+                            <i class="fa fa-star-o"></i>
+                            {% endfor %}
+                            by
+                            <span class="prof-username">
+                                <b>
+                                    <a class="text-decoration-none" href="{% url 'user' review.user.username %}">@{{review.user}}</a>
+                                </b>
+                            </span>
+                        </div>
+                        <div class="post-date">
+                            Posted on {{review.created_at | date:"M d, Y"}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-4 col-md-4 col-xl-2">
+                            <img src="{{review.book.cover_pic.url}}" class="w-100" alt="">
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-xl-10">
+                            <blockquote class="blockquote mb-0">
+                                <p class="comment">{{review.comment | truncatechars:"300"}}</p>
+                                <footer class="blockquote-footer">{{review.user.first_name}} {{review.user.last_name}}</cite></footer>
+                              </blockquote>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+
+        <div class="col-sm-12 mt-3 col-md-12 col-xl-12">
+            <nav>
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                    {% endif %}
+      
+                    <li class="page-item active">
+                        <a href="#" class="page-link">{{ page_obj.number }}</a>
+                    </li>
+      
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <a href="{% url 'books' %}" class="text-decoration-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        </svg>
+        Back
+    </a>
+</div>
+{% endblock content %}
