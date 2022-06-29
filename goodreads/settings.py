@@ -87,20 +87,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'goodreads.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'goodreads',
-#         'HOST':'localhost',
-#         'PORT':'5432',
-#         'USER':'postgres',
-#         'PASSWORD':'123'
-#     }
-# }
-
 
 DATABASES = {
     'default': {
@@ -152,13 +138,6 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'mohammedyousef.dev@gmail.com'
-EMAIL_HOST_PASSWORD = 'exhavxhdcsivltwo'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
